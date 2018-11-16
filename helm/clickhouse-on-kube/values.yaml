@@ -26,7 +26,7 @@ ebs:
 
 elb:
   # use frontend elb
-  enabled: true
+  enabled: false
   internal_range: 10.59.0.0/16,10.10.0.0/16
 
 zk:
@@ -36,7 +36,7 @@ zk:
   - zk-zookeeper.zk
 
 security:
-  enabled: true
+  enabled: false
 
   profiles:
   - name: default
@@ -50,7 +50,7 @@ security:
     queries: 0
     errors: 0
     result_rows: 0
-    read_rows: 0 
+    read_rows: 0
     execution_time: 0
 
   users:
@@ -63,7 +63,7 @@ security:
     profile: default
     quota: default
 
-  # is used for running distributed queries (system)  
+  # is used for running distributed queries (system)
   distributed:
     user: sys_distrib_query
     password: iudhc87wfy87hrevh
@@ -84,7 +84,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:  
+resources:
   limits:
    cpu: 250m
    memory: 1024Mi
