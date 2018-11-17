@@ -33,7 +33,7 @@ zk:
   enabled: true
   port: 2181
   servers:
-  - zk-zookeeper.zk
+  - kafka-zookeeper
 
 security:
   enabled: false
@@ -92,9 +92,9 @@ resources:
    cpu: 250m
    memory: 1024Mi
 
-nodeSelector:
+nodeSelector: {}
   # use nodes with label
-  type: services
+  # type: services
 
 tolerations: []
 
