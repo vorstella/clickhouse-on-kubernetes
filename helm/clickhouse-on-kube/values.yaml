@@ -6,8 +6,10 @@
 replicaCount: 1
 
 image:
-  repository: dmitryb/clickhouse-server
-  tag: latest
+  # repository: dmitryb/clickhouse-server
+  # tag: latest
+  repository: us.gcr.io/vorstella-noc-dev/clickhouse
+  tag: v1.1-server-573206f-597
   pullPolicy: Always
   # imagePullSecrets: grabdsbot
 
