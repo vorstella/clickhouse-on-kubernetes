@@ -25,6 +25,7 @@ spec:
   selector:
     app: {{ $.Release.Name }}
     release: {{ $.Release.Name }}
+  sessionAffinity: None
 ---
 apiVersion: v1
 kind: Service
@@ -43,6 +44,10 @@ spec:
   - name: rpc
     port: {{ $.Values.service.rpc_port }}
     targetPort: {{ $.Values.service.rpc_port }}
+    protocol: TCP
+  - name: rest
+    port: {{ $.Values.service.rest_port }}
+    targetPort: {{ $.Values.service.rest_port }}
     protocol: TCP
   - name: interserver
     port: 9009

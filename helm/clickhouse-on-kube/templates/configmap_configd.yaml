@@ -13,8 +13,10 @@ data:
     <yandex>
         <remote_servers incl="clickhouse_remote_servers" >
         <default_cluster>
-            {{range $i, $e := until (atoi (printf "%d" (int64 .Values.replicaCount))) }}
-              <shard>
+            <shard>
+                <weight>1</weight>
+                <internal_replication>true</internal_replication>
+                {{range $i, $e := until (atoi (printf "%d" (int64 .Values.replicaCount))) }}
                 <replica>
                     <host>{{ $.Release.Name }}-{{$i}}.clickhouse-headless.{{ $.Release.Namespace }}.svc.cluster.local</host>
                     <port>{{ $.Values.service.rpc_port }}</port>
@@ -23,8 +25,8 @@ data:
                     <password>{{ $.Values.security.distributed.password }}</password>
                     {{ end }}
                 </replica>
-              </shard>
-            {{end}}
+                {{end}}
+            </shard>
         </default_cluster>
         </remote_servers>
     </yandex>
