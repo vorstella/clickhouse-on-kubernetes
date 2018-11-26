@@ -11,12 +11,12 @@ metadata:
 data:
   clickhouse_remote_servers.xml: |-
     <yandex>
-        <remote_servers incl="clickhouse_remote_servers" >        
+        <remote_servers incl="clickhouse_remote_servers" >
         <default_cluster>
             {{range $i, $e := until (atoi (printf "%d" (int64 .Values.replicaCount))) }}
               <shard>
                 <replica>
-                    <host>{{ $.Release.Name }}-{{$i}}</host>
+                    <host>{{ $.Release.Name }}-{{$i}}.clickhouse-headless.{{ $.Release.Namespace }}.svc.cluster.local</host>
                     <port>{{ $.Values.service.rpc_port }}</port>
                     {{ if $.Values.security.enabled }}
                     <user>{{ $.Values.security.distributed.user }}</user>
@@ -39,7 +39,7 @@ data:
         </logger>
         -->
     </yandex>
-{{ if .Values.zk.enabled }}      
+{{ if .Values.zk.enabled }}
   zookeeper-servers.xml: |-
     <yandex>
         <zookeeper incl="zookeeper-servers">
@@ -48,11 +48,11 @@ data:
                 <host>{{ $zk }}</host>
                 <port>{{ $.Values.zk.port }}</port>
             </node>
-            {{- end }}        
+            {{- end }}
         </zookeeper>
 
         <!-- Allow to execute distributed DDL queries (CREATE, DROP, ALTER, RENAME) on cluster.
-        Works only if ZooKeeper is enabled. Comment it if such functionality isn't required. -->        
+        Works only if ZooKeeper is enabled. Comment it if such functionality isn't required. -->
         <distributed_ddl incl="clickhouse_distributed_ddl">
             <!-- Path in ZooKeeper to queue with DDL queries -->
             <path>/{{ .Release.Name }}/task_queue/ddl</path>

@@ -14,7 +14,7 @@ spec:
     matchLabels:
       app: {{ .Release.Name }}
       release: {{ .Release.Name }}
-  serviceName: {{ .Release.Name }}
+  serviceName: "{{ $.Release.Name }}-headless"
   template:
     metadata:
       labels:

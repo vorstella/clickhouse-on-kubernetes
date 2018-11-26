@@ -1,8 +1,7 @@
-{{range $i, $e := until (atoi (printf "%d" (int64 .Values.replicaCount))) }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $.Release.Name }}-{{$i}}
+  name: {{ $.Release.Name }}
   labels:
     app: {{ template "clickhouse-on-kube.name" $ }}
     chart: {{ template "clickhouse-on-kube.chart" $ }}
@@ -25,32 +24,30 @@ spec:
     protocol: TCP
   selector:
     app: {{ $.Release.Name }}
-    # shard_name: {{ $.Release.Name }}-{{$i}}
     release: {{ $.Release.Name }}
 ---
-{{end}}
-# --- elb ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Release.Name }}-client-svc"
+  name: "{{ $.Release.Name }}-headless"
   labels:
-    app: {{ .Release.Name }}
-    chart: {{ template "clickhouse-on-kube.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ template "clickhouse-on-kube.name" $ }}
+    chart: {{ template "clickhouse-on-kube.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
+  clusterIP: None
   ports:
   - name: rpc
     port: {{ $.Values.service.rpc_port }}
     targetPort: {{ $.Values.service.rpc_port }}
     protocol: TCP
-  - name: rest
-    port: {{ $.Values.service.rest_port }}
-    targetPort: {{ $.Values.service.rest_port }}
+  - name: interserver
+    port: 9009
+    targetPort: 9009
     protocol: TCP
   selector:
-    app: {{ .Release.Name }}
+    app: {{ $.Release.Name }}
     release: {{ $.Release.Name }}
-  sessionAffinity: None
-  type: ClusterIP
