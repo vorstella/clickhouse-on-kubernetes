@@ -33,7 +33,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Release.Name }}-client"
+  name: "{{ .Release.Name }}-client-svc"
   labels:
     app: {{ .Release.Name }}
     chart: {{ template "clickhouse-on-kube.chart" . }}
@@ -51,5 +51,6 @@ spec:
     protocol: TCP
   selector:
     app: {{ .Release.Name }}
+    release: {{ $.Release.Name }}
   sessionAffinity: None
   type: ClusterIP
