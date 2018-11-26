@@ -11,10 +11,6 @@ image:
   repository: us.gcr.io/vorstella-noc-dev/clickhouse
   tag: v1.1-server-573206f-597
   pullPolicy: Always
-  # imagePullSecrets: grabdsbot
-
-# grant pods/patch to default sa
-rbac: true
 
 service:
   type: ClusterIP
@@ -101,3 +97,5 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+nameOverride: {}

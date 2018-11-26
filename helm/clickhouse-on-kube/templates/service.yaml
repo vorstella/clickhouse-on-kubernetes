@@ -25,7 +25,7 @@ spec:
     protocol: TCP
   selector:
     app: {{ $.Release.Name }}
-    shard_name: {{ $.Release.Name }}-{{$i}}
+    # shard_name: {{ $.Release.Name }}-{{$i}}
     release: {{ $.Release.Name }}
 ---
 {{end}}

@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}  
+  name: {{ .Release.Name }}
   labels:
     app: {{ .Release.Name }}
     chart: {{ template "clickhouse-on-kube.chart" . }}
@@ -20,30 +20,18 @@ spec:
       labels:
         app: {{ .Release.Name }}
         release: {{ .Release.Name }}
-    spec:      
-      initContainers:
-      - name: labeler
-        image: devth/k8s-labeler
-        env:
-        - name: KUBE_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: KUBE_LABEL_shard_name
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
+    spec:
       containers:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}          
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
           - name: rpc
             containerPort: {{ .Values.service.rpc_port }}
             protocol: TCP
           - name: rest
             containerPort: {{ .Values.service.rest_port }}
-            protocol: TCP          
+            protocol: TCP
           - name: interserver
             containerPort: 9009
             protocol: TCP
@@ -85,14 +73,10 @@ spec:
         configMap:
           name: {{ .Release.Name }}-usersd
       {{ end }}
-      {{ if .Values.image.imagePullSecrets }}
-      imagePullSecrets:
-      - name: {{ .Values.image.imagePullSecrets }}
-      {{ end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
-    {{- end }}      
+    {{- end }}
     {{- with .Values.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
@@ -100,7 +84,7 @@ spec:
     {{- with .Values.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
-    {{- end }}  
+    {{- end }}
 
 {{ if .Values.ebs.enabled }}
   volumeClaimTemplates:
